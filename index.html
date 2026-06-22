@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Illumine Concept</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-box">
+      <img src="logo.png" alt="Illumine Concept" class="logo">
+      <h1>Financeiro</h1>
+      <p>Controle de contas, fluxo de caixa e DRE</p>
+      <form id="form-login">
+        <input type="email" id="email" placeholder="E-mail" required autocomplete="username">
+        <input type="password" id="senha" placeholder="Senha" required autocomplete="current-password">
+        <button type="submit">Entrar</button>
+      </form>
+      <div class="erro" id="erro-login"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

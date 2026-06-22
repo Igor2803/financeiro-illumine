@@ -1,0 +1,499 @@
+:root {
+  --dourado: #b8860b;
+  --dourado-claro: #f6ecd2;
+  --dourado-escuro: #0d0d0d;
+  --verde: #2b8a3e;
+  --vermelho: #c92a2a;
+  --cinza: #495057;
+  --fundo: #fdfbf5;
+  --branco: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--fundo);
+  color: var(--cinza);
+}
+
+/* ---------- LOGIN ---------- */
+.login-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: radial-gradient(circle at top, #1a1305 0%, #000000 70%);
+}
+
+.login-box {
+  position: relative;
+  background: var(--branco);
+  padding: 44px 36px 36px;
+  border-radius: 14px;
+  border: 1px solid var(--dourado);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.login-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #000000, var(--dourado), #000000);
+}
+
+.login-box .logo {
+  width: 200px;
+  max-width: 80%;
+  margin-bottom: 8px;
+}
+
+.login-box h1 {
+  color: #111;
+  margin: 0 0 4px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-box p {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: #888;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.login-box input:focus {
+  outline: none;
+  border-color: var(--dourado);
+}
+
+.login-box button {
+  width: 100%;
+  padding: 11px;
+  background: var(--dourado);
+  color: #000;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: #96690a;
+}
+
+.erro {
+  color: var(--vermelho);
+  font-size: 13px;
+  min-height: 18px;
+  margin-top: 8px;
+}
+
+/* ---------- LAYOUT APP ---------- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--dourado-escuro);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.sidebar .logo-box {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+.sidebar .logo-box img {
+  width: 160px;
+}
+
+.sidebar nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 24px;
+  font-size: 15px;
+  opacity: 0.85;
+  border-left: 3px solid transparent;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: rgba(184,134,11,0.3);
+  border-left: 3px solid var(--dourado);
+  opacity: 1;
+}
+
+.sidebar .sair {
+  margin-top: auto;
+  padding: 12px 24px;
+  cursor: pointer;
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+.sidebar .sair:hover {
+  opacity: 1;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+}
+
+.pagina {
+  display: none;
+}
+
+.pagina.ativa {
+  display: block;
+}
+
+.conteudo h1 {
+  margin-top: 0;
+  color: var(--dourado);
+  font-size: 24px;
+}
+
+/* ---------- CARDS / RESUMO ---------- */
+.cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: var(--branco);
+  border-radius: 10px;
+  padding: 18px 22px;
+  flex: 1;
+  min-width: 180px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card span {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.card strong {
+  font-size: 22px;
+}
+
+.card.receber strong { color: var(--verde); }
+.card.pagar strong { color: var(--vermelho); }
+.card.saldo strong { color: var(--dourado); }
+
+/* ---------- FORMULÁRIO ---------- */
+.form-box {
+  background: var(--branco);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.form-row > div {
+  flex: 1;
+  min-width: 150px;
+}
+
+.form-row label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #777;
+}
+
+.form-row input,
+.form-row select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn {
+  background: var(--dourado);
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn:hover { background: #96690a; }
+
+.btn-secundario {
+  background: #e9ecef;
+  color: var(--cinza);
+}
+
+.btn-secundario:hover { background: #dee2e6; }
+
+/* ---------- TABELA ---------- */
+.tabela-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--branco);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+th {
+  background: var(--dourado-claro);
+  color: var(--dourado);
+  font-size: 13px;
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge.pendente { background: #fff3bf; color: #856404; }
+.badge.pago, .badge.recebido { background: #d3f9d8; color: #2b8a3e; }
+.badge.atrasado { background: #ffe3e3; color: #c92a2a; }
+
+.acoes button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filtros input, .filtros select {
+  padding: 7px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* ---------- DRE ---------- */
+.dre-tabela td:last-child,
+.dre-tabela th:last-child {
+  text-align: right;
+}
+
+.dre-total td {
+  font-weight: bold;
+  border-top: 2px solid var(--dourado-claro);
+}
+
+.dre-positivo { color: var(--verde); }
+.dre-negativo { color: var(--vermelho); }
+
+.vazio {
+  text-align: center;
+  color: #aaa;
+  padding: 30px;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 10px;
+    gap: 4px;
+  }
+
+  .sidebar .logo-box {
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .sidebar .logo-box img {
+    width: 64px;
+  }
+
+  .sidebar nav {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    flex: 1;
+  }
+
+  .sidebar nav a {
+    padding: 10px 12px;
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    font-size: 13px;
+  }
+
+  .sidebar nav a:hover,
+  .sidebar nav a.active {
+    border-left: none;
+    border-bottom: 3px solid var(--dourado);
+  }
+
+  .sidebar .sair {
+    margin-top: 0;
+    padding: 10px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .conteudo {
+    padding: 18px;
+  }
+
+  .conteudo h1 {
+    font-size: 20px;
+  }
+
+  .cards,
+  .graficos {
+    flex-direction: column;
+  }
+
+  .card,
+  .grafico-box {
+    min-width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-row > div {
+    min-width: 100%;
+  }
+
+  .filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtros > div {
+    width: 100%;
+  }
+
+  .tabela-wrap table {
+    min-width: 560px;
+  }
+
+  .grafico-canvas-wrap {
+    height: 220px;
+  }
+}
+
+@media (max-width: 420px) {
+  .login-box {
+    padding: 32px 22px 28px;
+  }
+
+  .login-box .logo {
+    width: 150px;
+  }
+}
+
+/* ---------- GRÁFICOS ---------- */
+.graficos {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.grafico-box {
+  background: var(--branco);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  flex: 1;
+  min-width: 320px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.grafico-box h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: var(--cinza);
+}
+
+.grafico-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+
+.grafico-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

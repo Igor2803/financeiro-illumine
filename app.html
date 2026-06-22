@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illumine Concept - Financeiro</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="logo-box">
+        <img src="logo.png" alt="Illumine Concept">
+      </div>
+      <nav>
+        <a href="#" data-pagina="dashboard" class="active">Dashboard</a>
+        <a href="#" data-pagina="pagar">Contas a Pagar</a>
+        <a href="#" data-pagina="receber">Contas a Receber</a>
+        <a href="#" data-pagina="fluxo">Fluxo de Caixa</a>
+        <a href="#" data-pagina="dre">DRE</a>
+      </nav>
+      <div class="sair" id="btn-sair">🚪 Sair</div>
+    </aside>
+
+    <main class="conteudo">
+
+      <!-- DASHBOARD -->
+      <section class="pagina ativa" id="pagina-dashboard">
+        <h1>Dashboard</h1>
+
+        <div class="filtros">
+          <div>
+            <label>Mês</label>
+            <input type="month" id="dashboard-mes">
+          </div>
+          <div>
+            <button class="btn" id="dashboard-filtrar">Filtrar</button>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card receber">
+            <span>A receber (pendente)</span>
+            <strong id="resumo-a-receber">R$ 0,00</strong>
+          </div>
+          <div class="card pagar">
+            <span>A pagar (pendente)</span>
+            <strong id="resumo-a-pagar">R$ 0,00</strong>
+          </div>
+          <div class="card saldo">
+            <span>Saldo do mês (realizado)</span>
+            <strong id="resumo-saldo">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div class="graficos">
+          <div class="grafico-box">
+            <h3>Entradas x Saídas (últimos 6 meses)</h3>
+            <div class="grafico-canvas-wrap">
+              <canvas id="grafico-entradas-saidas"></canvas>
+            </div>
+          </div>
+          <div class="grafico-box">
+            <h3>Despesas por categoria no mês</h3>
+            <div class="grafico-canvas-wrap">
+              <canvas id="grafico-despesas-categoria"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <h2>Próximos vencimentos</h2>
+        <div class="tabela-wrap">
+          <table>
+            <thead>
+              <tr><th>Tipo</th><th>Descrição</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr>
+            </thead>
+            <tbody id="tabela-proximos"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CONTAS A PAGAR -->
+      <section class="pagina" id="pagina-pagar">
+        <h1>Contas a Pagar</h1>
+
+        <div class="form-box">
+          <form id="form-pagar">
+            <input type="hidden" id="pagar-id">
+            <div class="form-row">
+              <div>
+                <label>Descrição</label>
+                <input type="text" id="pagar-descricao" required>
+              </div>
+              <div>
+                <label>Categoria</label>
+                <select id="pagar-categoria">
+                  <option>Aluguel</option>
+                  <option>Produtos</option>
+                  <option>Energia</option>
+                  <option>Água</option>
+                  <option>Internet</option>
+                  <option>Salários/Comissões</option>
+                  <option>Marketing</option>
+                  <option>Manutenção</option>
+                  <option>Impostos</option>
+                  <option>Outros</option>
+                </select>
+              </div>
+              <div>
+                <label>Valor (R$)</label>
+                <input type="number" id="pagar-valor" step="0.01" min="0" required>
+              </div>
+              <div>
+                <label>Vencimento</label>
+                <input type="date" id="pagar-vencimento" required>
+              </div>
+            </div>
+            <button type="submit" class="btn">Salvar</button>
+            <button type="button" class="btn btn-secundario" id="pagar-cancelar" style="display:none;">Cancelar edição</button>
+          </form>
+        </div>
+
+        <div class="filtros">
+          <div>
+            <label>Status</label>
+            <select id="pagar-filtro-status">
+              <option value="todos">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="pago">Pago</option>
+            </select>
+          </div>
+          <div>
+            <label>Mês</label>
+            <input type="month" id="pagar-filtro-mes">
+          </div>
+          <div>
+            <button class="btn btn-secundario" id="pagar-limpar-mes">Limpar mês</button>
+          </div>
+        </div>
+
+        <div class="tabela-wrap">
+          <table>
+            <thead>
+              <tr><th>Descrição</th><th>Categoria</th><th>Vencimento</th><th>Valor</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="tabela-pagar"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CONTAS A RECEBER -->
+      <section class="pagina" id="pagina-receber">
+        <h1>Contas a Receber</h1>
+
+        <div class="form-box">
+          <form id="form-receber">
+            <input type="hidden" id="receber-id">
+            <div class="form-row">
+              <div>
+                <label>Descrição</label>
+                <input type="text" id="receber-descricao" required>
+              </div>
+              <div>
+                <label>Categoria</label>
+                <select id="receber-categoria">
+                  <option>Serviços</option>
+                  <option>Produtos vendidos</option>
+                  <option>Pacotes/Assinaturas</option>
+                  <option>Outros</option>
+                </select>
+              </div>
+              <div>
+                <label>Valor (R$)</label>
+                <input type="number" id="receber-valor" step="0.01" min="0" required>
+              </div>
+              <div>
+                <label>Vencimento</label>
+                <input type="date" id="receber-vencimento" required>
+              </div>
+            </div>
+            <button type="submit" class="btn">Salvar</button>
+            <button type="button" class="btn btn-secundario" id="receber-cancelar" style="display:none;">Cancelar edição</button>
+          </form>
+        </div>
+
+        <div class="filtros">
+          <div>
+            <label>Status</label>
+            <select id="receber-filtro-status">
+              <option value="todos">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="recebido">Recebido</option>
+            </select>
+          </div>
+          <div>
+            <label>Mês</label>
+            <input type="month" id="receber-filtro-mes">
+          </div>
+          <div>
+            <button class="btn btn-secundario" id="receber-limpar-mes">Limpar mês</button>
+          </div>
+        </div>
+
+        <div class="tabela-wrap">
+          <table>
+            <thead>
+              <tr><th>Descrição</th><th>Categoria</th><th>Vencimento</th><th>Valor</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="tabela-receber"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FLUXO DE CAIXA -->
+      <section class="pagina" id="pagina-fluxo">
+        <h1>Fluxo de Caixa</h1>
+        <div class="filtros">
+          <div>
+            <label>De</label>
+            <input type="date" id="fluxo-data-inicio">
+          </div>
+          <div>
+            <label>Até</label>
+            <input type="date" id="fluxo-data-fim">
+          </div>
+          <div>
+            <button class="btn" id="fluxo-filtrar">Filtrar</button>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="card receber">
+            <span>Entradas no período</span>
+            <strong id="fluxo-entradas">R$ 0,00</strong>
+          </div>
+          <div class="card pagar">
+            <span>Saídas no período</span>
+            <strong id="fluxo-saidas">R$ 0,00</strong>
+          </div>
+          <div class="card saldo">
+            <span>Saldo do período</span>
+            <strong id="fluxo-saldo">R$ 0,00</strong>
+          </div>
+        </div>
+        <div class="tabela-wrap">
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Saldo acumulado</th></tr>
+            </thead>
+            <tbody id="tabela-fluxo"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- DRE -->
+      <section class="pagina" id="pagina-dre">
+        <h1>DRE - Demonstração de Resultado</h1>
+        <div class="filtros">
+          <div>
+            <label>Mês</label>
+            <input type="month" id="dre-mes">
+          </div>
+          <div>
+            <button class="btn" id="dre-gerar">Gerar DRE</button>
+          </div>
+        </div>
+
+        <div class="tabela-wrap">
+          <table class="dre-tabela">
+            <thead>
+              <tr><th>Descrição</th><th>Valor (R$)</th></tr>
+            </thead>
+            <tbody id="tabela-dre"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/contasPagar.js"></script>
+  <script src="js/contasReceber.js"></script>
+  <script src="js/fluxoCaixa.js"></script>
+  <script src="js/dre.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
