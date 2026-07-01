@@ -93,10 +93,11 @@ function processarArquivo(file) {
         const movimentacao = colunas[0] || '';
         const tipo = colunas[1] || '';
         const valorBruto = parsearValorBR(colunas[2]);
+        const tarifaRaw = colunas[3] || '';
+        const tarifa = tarifaRaw.toLowerCase() === 'grátis' || tarifaRaw === '' ? 0 : parsearValorBR(tarifaRaw);
         const data = parsearDataBR(colunas[4] || colunas[3]);
         const situacao = colunas[5] || colunas[3] || '';
         const destino = colunas[6] || colunas[5] || '';
-        const valorTotal = colunas[7] ? parsearValorBR(colunas[7]) : Math.abs(valorBruto);
         const origem = colunas[8] || '';
 
         if (!data) continue;
@@ -106,8 +107,12 @@ function processarArquivo(file) {
           movimentacao.toLowerCase() === 'credito' ||
           valorBruto > 0;
 
-        // Definir descrição
-        const desc = destino || origem || tipo || 'Importado';
+        // Valor líquido (coluna C) + observação de taxa quando houver
+        const valorLiquido = Math.abs(valorBruto);
+        const descBase = destino || origem || tipo || 'Importado';
+        const desc = tarifa > 0
+          ? `${descBase} [Taxa Stone: ${formatarMoeda(tarifa)}]`
+          : descBase;
 
         // Categoria automática
         let categoria;
@@ -128,9 +133,9 @@ function processarArquivo(file) {
           tipo: isCredito ? 'Entrada' : 'Saída',
           descricao: desc,
           categoria,
-          valor: Math.abs(valorTotal) || Math.abs(valorBruto),
+          valor: valorLiquido,
+          tarifa,
           data,
-          situacao: situacao,
         });
       }
 
@@ -240,6 +245,7 @@ btnImportar.addEventListener('click', async () => {
           descricao: r.descricao,
           categoria: r.categoria,
           valor: r.valor,
+          ...(r.tarifa > 0 && { taxaStone: r.tarifa }),
           vencimento: r.data,
           status: 'recebido',
           dataRecebimento: r.data,
@@ -252,6 +258,7 @@ btnImportar.addEventListener('click', async () => {
           descricao: r.descricao,
           categoria: r.categoria,
           valor: r.valor,
+          ...(r.tarifa > 0 && { taxaStone: r.tarifa }),
           vencimento: r.data,
           status: 'pago',
           dataPagamento: r.data,
