@@ -125,11 +125,20 @@ function processarArquivo(file) {
         // Para créditos: Origem tem o nome de quem pagou (cliente/pagador)
         // Para débitos: Destino tem o nome de quem recebeu
         const nomeGenerico = (s) => !s || s.toLowerCase().includes('stone principal') || s.toLowerCase().includes('illumine');
+
+        function labelTipo(t, credito) {
+          const tl = t.toLowerCase();
+          if (tl.includes('transferência') || tl.includes('transferencia')) return 'Transf. entre contas próprias';
+          if (tl.includes('pix')) return credito ? 'PIX recebido' : 'PIX enviado';
+          if (tl.includes('transação') || tl.includes('transacao')) return credito ? 'Transação (máquina)' : 'Transação';
+          return t || (credito ? 'Recebimento' : 'Pagamento');
+        }
+
         let descBase;
         if (isCredito) {
-          descBase = !nomeGenerico(origem) ? origem : (!nomeGenerico(destino) ? destino : tipo || 'Recebimento');
+          descBase = !nomeGenerico(origem) ? origem : (!nomeGenerico(destino) ? destino : labelTipo(tipo, true));
         } else {
-          descBase = !nomeGenerico(destino) ? destino : (!nomeGenerico(origem) ? origem : tipo || 'Pagamento');
+          descBase = !nomeGenerico(destino) ? destino : (!nomeGenerico(origem) ? origem : labelTipo(tipo, false));
         }
         const desc = tarifa > 0
           ? `${descBase} [Taxa Stone: ${formatarMoeda(tarifa)}]`
