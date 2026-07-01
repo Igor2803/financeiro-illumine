@@ -337,3 +337,48 @@ btnImportar.addEventListener('click', async () => {
     btnImportar.textContent = 'Importar registros';
   }
 });
+
+// ---------- RECATEGORIZAR IMPORTADOS ----------
+document.getElementById('btn-recategorizar').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-recategorizar');
+  const status = document.getElementById('recategorizar-status');
+  btn.disabled = true;
+  btn.textContent = 'Processando...';
+  status.textContent = '';
+  status.style.color = '#495057';
+
+  try {
+    const [snapPagar, snapReceber] = await Promise.all([
+      db.collection('contasPagar').where('importado', '==', true).get(),
+      db.collection('contasReceber').where('importado', '==', true).get(),
+    ]);
+
+    const atualizacoes = [];
+    snapPagar.docs.forEach((doc) => {
+      atualizacoes.push({ ref: doc.ref, categoria: detectarCategoriaSaida(doc.data().descricao || '') });
+    });
+    snapReceber.docs.forEach((doc) => {
+      atualizacoes.push({ ref: doc.ref, categoria: 'Serviços' });
+    });
+
+    // Firestore batch suporta até 500 operações por vez
+    const TAMANHO_LOTE = 499;
+    for (let i = 0; i < atualizacoes.length; i += TAMANHO_LOTE) {
+      const lote = db.batch();
+      atualizacoes.slice(i, i + TAMANHO_LOTE).forEach(({ ref, categoria }) => {
+        lote.update(ref, { categoria });
+      });
+      await lote.commit();
+    }
+
+    status.textContent = `✅ ${atualizacoes.length} lançamentos recategorizados!`;
+    status.style.color = '#2b8a3e';
+  } catch (err) {
+    status.textContent = 'Erro ao recategorizar. Tente novamente.';
+    status.style.color = '#c92a2a';
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Recategorizar importados';
+  }
+});
