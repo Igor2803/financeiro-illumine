@@ -18,6 +18,7 @@
         <a href="#" data-pagina="receber">Contas a Receber</a>
         <a href="#" data-pagina="fluxo">Fluxo de Caixa</a>
         <a href="#" data-pagina="dre">DRE</a>
+        <a href="#" data-pagina="importar">Importar Extrato</a>
       </nav>
       <div class="sair" id="btn-sair">🚪 Sair</div>
     </aside>
@@ -28,13 +29,20 @@
       <section class="pagina ativa" id="pagina-dashboard">
         <h1>Dashboard</h1>
 
-        <div class="filtros">
+        <div class="dash-presets">
+          <button class="btn btn-secundario dash-preset" data-meses="3">3 meses</button>
+          <button class="btn btn-secundario dash-preset ativo" data-meses="6">6 meses</button>
+          <button class="btn btn-secundario dash-preset" data-meses="12">12 meses</button>
+        </div>
+
+        <div class="filtros" style="margin-top:10px;">
           <div>
-            <label>Mês</label>
-            <input type="month" id="dashboard-mes">
+            <label>De</label>
+            <input type="month" id="dashboard-de">
           </div>
           <div>
-            <button class="btn" id="dashboard-filtrar">Filtrar</button>
+            <label>Até</label>
+            <input type="month" id="dashboard-ate">
           </div>
         </div>
 
@@ -48,20 +56,20 @@
             <strong id="resumo-a-pagar">R$ 0,00</strong>
           </div>
           <div class="card saldo">
-            <span>Saldo do mês (realizado)</span>
+            <span>Resultado do período</span>
             <strong id="resumo-saldo">R$ 0,00</strong>
           </div>
         </div>
 
         <div class="graficos">
-          <div class="grafico-box">
-            <h3>Entradas x Saídas (últimos 6 meses)</h3>
+          <div class="grafico-box" style="flex:2;min-width:320px;">
+            <h3>Entradas x Saídas por mês</h3>
             <div class="grafico-canvas-wrap">
               <canvas id="grafico-entradas-saidas"></canvas>
             </div>
           </div>
           <div class="grafico-box">
-            <h3>Despesas por categoria no mês</h3>
+            <h3>Despesas por categoria</h3>
             <div class="grafico-canvas-wrap">
               <canvas id="grafico-despesas-categoria"></canvas>
             </div>
@@ -274,6 +282,43 @@
         </div>
       </section>
 
+      <!-- IMPORTAR EXTRATO -->
+      <section class="pagina" id="pagina-importar">
+        <h1>Importar Extrato</h1>
+        <p style="color:#666;margin-top:-10px;margin-bottom:20px;">Importe o CSV exportado da Stone (ou outro banco). Entradas viram Contas a Receber, saídas viram Contas a Pagar — tudo já marcado como realizado.</p>
+
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">📂</div>
+          <p>Arraste o arquivo CSV aqui ou clique para selecionar</p>
+          <span>Formatos aceitos: .csv (separador ; ou ,)</span>
+          <input type="file" id="input-csv" accept=".csv,.txt" style="display:none;">
+        </div>
+
+        <div id="import-preview-wrap" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px;">
+            <strong id="import-contador"></strong>
+            <button class="btn" id="btn-importar">Importar registros</button>
+          </div>
+          <div class="tabela-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:36px;"><input type="checkbox" id="check-todos" checked title="Selecionar/desmarcar todos"></th>
+                  <th>Tipo</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th>Valor</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-preview"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="import-status" style="margin-top:16px;font-weight:500;"></div>
+      </section>
+
     </main>
   </div>
 
@@ -289,6 +334,7 @@
   <script src="js/fluxoCaixa.js"></script>
   <script src="js/dre.js"></script>
   <script src="js/dashboard.js"></script>
+  <script src="js/importacao.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

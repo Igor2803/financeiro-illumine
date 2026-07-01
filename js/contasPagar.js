@@ -92,7 +92,7 @@ tabelaPagar.addEventListener('click', async (e) => {
   if (!conta) return;
 
   if (acao === 'pagar') {
-    await colecaoPagar.doc(id).update({ status: 'pago', dataPagamento: hojeISO() });
+    await colecaoPagar.doc(id).update({ status: 'pago', dataPagamento: conta.vencimento });
   } else if (acao === 'reabrir') {
     await colecaoPagar.doc(id).update({ status: 'pendente', dataPagamento: firebase.firestore.FieldValue.delete() });
   } else if (acao === 'excluir') {

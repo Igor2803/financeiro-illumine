@@ -356,6 +356,68 @@ tr:last-child td { border-bottom: none; }
   padding: 30px;
 }
 
+/* ---------- DASHBOARD PRESETS ---------- */
+.dash-presets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.dash-preset {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.dash-preset.ativo {
+  background: var(--dourado);
+  color: #000;
+  font-weight: 600;
+  border: 1px solid #000;
+}
+
+/* ---------- IMPORTAÇÃO ---------- */
+.drop-zone {
+  border: 2px dashed var(--dourado);
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--dourado-claro);
+  transition: background 0.2s;
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+  background: #f0e0a8;
+}
+
+.drop-zone .drop-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.drop-zone p {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.drop-zone span {
+  font-size: 12px;
+  color: #888;
+}
+
+.row-desmarcada {
+  opacity: 0.4;
+}
+
+.row-desmarcada td {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
 /* ---------- RESPONSIVO ---------- */
 @media (max-width: 768px) {
   .app-layout {

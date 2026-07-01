@@ -92,7 +92,7 @@ tabelaReceber.addEventListener('click', async (e) => {
   if (!conta) return;
 
   if (acao === 'receber') {
-    await colecaoReceber.doc(id).update({ status: 'recebido', dataRecebimento: hojeISO() });
+    await colecaoReceber.doc(id).update({ status: 'recebido', dataRecebimento: conta.vencimento });
   } else if (acao === 'reabrir') {
     await colecaoReceber.doc(id).update({ status: 'pendente', dataRecebimento: firebase.firestore.FieldValue.delete() });
   } else if (acao === 'excluir') {
