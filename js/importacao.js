@@ -122,7 +122,15 @@ function processarArquivo(file) {
 
         // Valor líquido (coluna C) + observação de taxa quando houver
         const valorLiquido = Math.abs(valorBruto);
-        const descBase = destino || origem || tipo || 'Importado';
+        // Para créditos: Origem tem o nome de quem pagou (cliente/pagador)
+        // Para débitos: Destino tem o nome de quem recebeu
+        const nomeGenerico = (s) => !s || s.toLowerCase().includes('stone principal') || s.toLowerCase().includes('illumine');
+        let descBase;
+        if (isCredito) {
+          descBase = !nomeGenerico(origem) ? origem : (!nomeGenerico(destino) ? destino : tipo || 'Recebimento');
+        } else {
+          descBase = !nomeGenerico(destino) ? destino : (!nomeGenerico(origem) ? origem : tipo || 'Pagamento');
+        }
         const desc = tarifa > 0
           ? `${descBase} [Taxa Stone: ${formatarMoeda(tarifa)}]`
           : descBase;

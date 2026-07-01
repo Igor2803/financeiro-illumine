@@ -6,6 +6,7 @@ const formPagar = document.getElementById('form-pagar');
 const tabelaPagar = document.getElementById('tabela-pagar');
 const filtroStatusPagar = document.getElementById('pagar-filtro-status');
 const filtroMesPagar = document.getElementById('pagar-filtro-mes');
+const filtroBuscaPagar = document.getElementById('pagar-filtro-busca');
 const btnLimparMesPagar = document.getElementById('pagar-limpar-mes');
 const btnCancelarPagar = document.getElementById('pagar-cancelar');
 
@@ -22,6 +23,7 @@ function renderizarTabelaPagar() {
   const linhas = window.contasPagarCache
     .filter((c) => filtro === 'todos' || c.status === filtro)
     .filter((c) => !mes || (c.vencimento || '').startsWith(mes))
+    .filter((c) => !filtroBuscaPagar.value || (c.descricao || '').toLowerCase().includes(filtroBuscaPagar.value.toLowerCase()))
     .map((c) => {
       const st = statusVisual(c.status, c.vencimento);
       const acaoStatus = c.status === 'pago'
@@ -48,8 +50,10 @@ function renderizarTabelaPagar() {
 
 filtroStatusPagar.addEventListener('change', renderizarTabelaPagar);
 filtroMesPagar.addEventListener('change', renderizarTabelaPagar);
+filtroBuscaPagar.addEventListener('input', renderizarTabelaPagar);
 btnLimparMesPagar.addEventListener('click', () => {
   filtroMesPagar.value = '';
+  filtroBuscaPagar.value = '';
   renderizarTabelaPagar();
 });
 

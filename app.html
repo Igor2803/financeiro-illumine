@@ -76,6 +76,21 @@
           </div>
         </div>
 
+        <div class="graficos" style="margin-top:0;">
+          <div class="grafico-box">
+            <h3>Top quem mais pagou pra você</h3>
+            <div class="grafico-canvas-wrap">
+              <canvas id="grafico-top-entrada"></canvas>
+            </div>
+          </div>
+          <div class="grafico-box">
+            <h3>Top para onde mais saiu</h3>
+            <div class="grafico-canvas-wrap">
+              <canvas id="grafico-top-saida"></canvas>
+            </div>
+          </div>
+        </div>
+
         <h2>Próximos vencimentos</h2>
         <div class="tabela-wrap">
           <table>
@@ -141,8 +156,12 @@
             <label>Mês</label>
             <input type="month" id="pagar-filtro-mes">
           </div>
+          <div style="flex:2;min-width:200px;">
+            <label>Buscar por nome/destino</label>
+            <input type="text" id="pagar-filtro-busca" placeholder="Ex: Drogaria, Aluguel...">
+          </div>
           <div>
-            <button class="btn btn-secundario" id="pagar-limpar-mes">Limpar mês</button>
+            <button class="btn btn-secundario" id="pagar-limpar-mes">Limpar</button>
           </div>
         </div>
 
@@ -204,8 +223,12 @@
             <label>Mês</label>
             <input type="month" id="receber-filtro-mes">
           </div>
+          <div style="flex:2;min-width:200px;">
+            <label>Buscar por nome/origem</label>
+            <input type="text" id="receber-filtro-busca" placeholder="Ex: Vanessa, Stone, PIX...">
+          </div>
           <div>
-            <button class="btn btn-secundario" id="receber-limpar-mes">Limpar mês</button>
+            <button class="btn btn-secundario" id="receber-limpar-mes">Limpar</button>
           </div>
         </div>
 

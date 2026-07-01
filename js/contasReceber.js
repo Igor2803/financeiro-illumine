@@ -6,6 +6,7 @@ const formReceber = document.getElementById('form-receber');
 const tabelaReceber = document.getElementById('tabela-receber');
 const filtroStatusReceber = document.getElementById('receber-filtro-status');
 const filtroMesReceber = document.getElementById('receber-filtro-mes');
+const filtroBuscaReceber = document.getElementById('receber-filtro-busca');
 const btnLimparMesReceber = document.getElementById('receber-limpar-mes');
 const btnCancelarReceber = document.getElementById('receber-cancelar');
 
@@ -22,6 +23,7 @@ function renderizarTabelaReceber() {
   const linhas = window.contasReceberCache
     .filter((c) => filtro === 'todos' || c.status === filtro)
     .filter((c) => !mes || (c.vencimento || '').startsWith(mes))
+    .filter((c) => !filtroBuscaReceber.value || (c.descricao || '').toLowerCase().includes(filtroBuscaReceber.value.toLowerCase()))
     .map((c) => {
       const st = statusVisual(c.status, c.vencimento);
       const acaoStatus = c.status === 'recebido'
@@ -48,8 +50,10 @@ function renderizarTabelaReceber() {
 
 filtroStatusReceber.addEventListener('change', renderizarTabelaReceber);
 filtroMesReceber.addEventListener('change', renderizarTabelaReceber);
+filtroBuscaReceber.addEventListener('input', renderizarTabelaReceber);
 btnLimparMesReceber.addEventListener('click', () => {
   filtroMesReceber.value = '';
+  filtroBuscaReceber.value = '';
   renderizarTabelaReceber();
 });
 

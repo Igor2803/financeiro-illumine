@@ -7,6 +7,8 @@ const PALETA_GRAFICO = ['#b8860b','#2b8a3e','#c92a2a','#d4af37','#495057','#e8c7
 
 let graficoEntradasSaidas = null;
 let graficoDespesasCategoria = null;
+let graficoTopEntrada = null;
+let graficoTopSaida = null;
 
 function mesAtualISO() {
   const d = new Date();
@@ -107,6 +109,7 @@ function atualizarDashboard() {
       .join('') || `<tr><td colspan="5" class="vazio">Nenhuma conta pendente.</td></tr>`;
 
   atualizarGraficos(pagar, receber, de, ate);
+  atualizarRanking(pagar, receber, de, ate);
 }
 
 function atualizarGraficos(pagar, receber, de, ate) {
@@ -180,5 +183,61 @@ function atualizarGraficos(pagar, receber, de, ate) {
       maintainAspectRatio: false,
       plugins: { legend: { position: 'bottom' } },
     },
+  });
+}
+
+function topPorNome(lista, campo, n) {
+  const mapa = {};
+  lista.forEach((c) => {
+    const nome = (c[campo] || 'Outros').replace(/\[Taxa Stone.*?\]/g, '').trim().slice(0, 30);
+    mapa[nome] = (mapa[nome] || 0) + c.valor;
+  });
+  return Object.entries(mapa)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n);
+}
+
+function atualizarRanking(pagar, receber, de, ate) {
+  const recebidosPeriodo = receber.filter(
+    (c) => c.status === 'recebido' && (c.vencimento || '') >= de + '-01' && (c.vencimento || '') <= ate + '-31'
+  );
+  const pagosPeriodo = pagar.filter(
+    (c) => c.status === 'pago' && (c.vencimento || '') >= de + '-01' && (c.vencimento || '') <= ate + '-31'
+  );
+
+  const topEntrada = topPorNome(recebidosPeriodo, 'descricao', 7);
+  const topSaida = topPorNome(pagosPeriodo, 'descricao', 7);
+
+  const opcoesBar = () => ({
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, ticks: { callback: (v) => 'R$ ' + v.toLocaleString('pt-BR') } },
+    },
+    elements: { bar: { borderRadius: 4 } },
+  });
+
+  const ctx3 = document.getElementById('grafico-top-entrada');
+  if (graficoTopEntrada) graficoTopEntrada.destroy();
+  graficoTopEntrada = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: topEntrada.map((e) => e[0]),
+      datasets: [{ data: topEntrada.map((e) => e[1]), backgroundColor: '#2b8a3e' }],
+    },
+    options: opcoesBar(),
+  });
+
+  const ctx4 = document.getElementById('grafico-top-saida');
+  if (graficoTopSaida) graficoTopSaida.destroy();
+  graficoTopSaida = new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: topSaida.map((e) => e[0]),
+      datasets: [{ data: topSaida.map((e) => e[1]), backgroundColor: '#c92a2a' }],
+    },
+    options: opcoesBar(),
   });
 }
