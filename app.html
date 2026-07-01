@@ -295,7 +295,38 @@
         </div>
 
         <div id="import-preview-wrap" style="display:none;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px;">
+
+          <div class="cat-padrao-box">
+            <strong>Categoria padrão</strong>
+            <div class="cat-padrao-linha">
+              <span class="badge recebido">Entradas</span>
+              <select id="cat-padrao-entrada">
+                <option>Serviços</option>
+                <option>Produtos vendidos</option>
+                <option>Pacotes/Assinaturas</option>
+                <option>Outros</option>
+              </select>
+              <button class="btn btn-secundario btn-sm" id="aplicar-cat-entrada">Aplicar a todas</button>
+            </div>
+            <div class="cat-padrao-linha">
+              <span class="badge atrasado">Saídas</span>
+              <select id="cat-padrao-saida">
+                <option>Aluguel</option>
+                <option>Produtos</option>
+                <option>Energia</option>
+                <option>Água</option>
+                <option>Internet</option>
+                <option>Salários/Comissões</option>
+                <option>Marketing</option>
+                <option>Manutenção</option>
+                <option>Impostos</option>
+                <option selected>Outros</option>
+              </select>
+              <button class="btn btn-secundario btn-sm" id="aplicar-cat-saida">Aplicar a todas</button>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 12px;">
             <strong id="import-contador"></strong>
             <button class="btn" id="btn-importar">Importar registros</button>
           </div>

@@ -1,5 +1,19 @@
 const dropZone = document.getElementById('drop-zone');
 const checkTodos = document.getElementById('check-todos');
+const catPadraoEntrada = document.getElementById('cat-padrao-entrada');
+const catPadraoSaida = document.getElementById('cat-padrao-saida');
+const btnAplicarEntrada = document.getElementById('aplicar-cat-entrada');
+const btnAplicarSaida = document.getElementById('aplicar-cat-saida');
+
+btnAplicarEntrada.addEventListener('click', () => {
+  linhasParseadas.forEach((r) => { if (r.tipo === 'Entrada') r.categoria = catPadraoEntrada.value; });
+  renderizarPreview();
+});
+
+btnAplicarSaida.addEventListener('click', () => {
+  linhasParseadas.forEach((r) => { if (r.tipo === 'Saída') r.categoria = catPadraoSaida.value; });
+  renderizarPreview();
+});
 const inputCSV = document.getElementById('input-csv');
 const previewWrap = document.getElementById('import-preview-wrap');
 const tabelaPreview = document.getElementById('tabela-preview');
@@ -96,7 +110,6 @@ function processarArquivo(file) {
         const tarifaRaw = colunas[3] || '';
         const tarifa = tarifaRaw.toLowerCase() === 'grátis' || tarifaRaw === '' ? 0 : parsearValorBR(tarifaRaw);
         const data = parsearDataBR(colunas[4] || colunas[3]);
-        const situacao = colunas[5] || colunas[3] || '';
         const destino = colunas[6] || colunas[5] || '';
         const origem = colunas[8] || '';
 

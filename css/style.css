@@ -418,6 +418,46 @@ tr:last-child td { border-bottom: none; }
   color: #aaa;
 }
 
+.cat-padrao-box {
+  background: var(--branco);
+  border: 1px solid var(--dourado-claro);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 20px 0 0;
+}
+
+.cat-padrao-box strong {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--cinza);
+}
+
+.cat-padrao-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.cat-padrao-linha:last-child {
+  margin-bottom: 0;
+}
+
+.cat-padrao-linha select {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
 /* ---------- RESPONSIVO ---------- */
 @media (max-width: 768px) {
   .app-layout {
