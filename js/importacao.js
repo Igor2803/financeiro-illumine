@@ -76,6 +76,20 @@ function parsearDataBR(str) {
   return '';
 }
 
+function detectarCategoriaSaida(desc) {
+  const d = desc.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  if (/eletro|eletric|cpfl|cemig|coelba|celpe|energisa|enel|light s\.a|light -/.test(d)) return 'Energia';
+  if (/sabesp|saneamento|agua|sanepar|cagece|caern|cosanpa|embasa|caesb/.test(d)) return 'Água';
+  if (/cosmetico|cosmeticos|beleza|estetica|perfum|quimica|l'oreal|loreal|wella|schwarzkopf|keune|inoar|cadiveu|truss|amend|salon line|argan/.test(d)) return 'Produtos';
+  if (/aluguel|locacao|locação|imovel|imóvel/.test(d)) return 'Aluguel';
+  if (/internet|fibra|banda larga|vivo|claro|tim|oi |net |nextel|starlink/.test(d)) return 'Internet';
+  if (/salario|salário|comissao|comissão|folha|funcionario|funcionário|colaborador/.test(d)) return 'Salários/Comissões';
+  if (/marketing|publicidade|propaganda|instagram|facebook|google ads|impulsionamento/.test(d)) return 'Marketing';
+  if (/manutencao|manutenção|reparo|conserto|tecnico|técnico|instalacao/.test(d)) return 'Manutenção';
+  if (/imposto|tributo|taxa|darf|das |simples|iss|icms|inss|fgts/.test(d)) return 'Impostos';
+  return 'Outros';
+}
+
 function processarArquivo(file) {
   importStatus.textContent = '';
   const reader = new FileReader();
@@ -149,18 +163,12 @@ function processarArquivo(file) {
           ? `${descBase} [Taxa Stone: ${formatarMoeda(tarifa)}]`
           : descBase;
 
-        // Categoria automática
+        // Categoria automática por palavras-chave
         let categoria;
         if (isCredito) {
-          if (tipo.toLowerCase().includes('transação') || tipo.toLowerCase().includes('transacao')) {
-            categoria = 'Serviços';
-          } else {
-            categoria = 'Serviços';
-          }
+          categoria = 'Serviços';
         } else {
-          if (tipo.toLowerCase().includes('pix')) categoria = 'Outros';
-          else if (tipo.toLowerCase().includes('transação') || tipo.toLowerCase().includes('transacao')) categoria = 'Outros';
-          else categoria = 'Outros';
+          categoria = detectarCategoriaSaida(desc);
         }
 
         linhasParseadas.push({
