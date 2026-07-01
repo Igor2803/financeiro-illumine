@@ -126,10 +126,12 @@ function processarArquivo(file) {
         // Para débitos: Destino tem o nome de quem recebeu
         const nomeGenerico = (s) => !s || s.toLowerCase().includes('stone principal') || s.toLowerCase().includes('illumine');
 
+        // Só chamada quando AMBOS origem e destino são da própria empresa
         function labelTipo(t, credito) {
           const tl = t.toLowerCase();
-          if (tl.includes('transferência') || tl.includes('transferencia')) return 'Transf. entre contas próprias';
-          if (tl.includes('pix')) return credito ? 'PIX recebido' : 'PIX enviado';
+          if (tl.includes('transferência') || tl.includes('transferencia') || tl.includes('pix')) {
+            return 'Transf. entre contas próprias';
+          }
           if (tl.includes('transação') || tl.includes('transacao')) return credito ? 'Transação (máquina)' : 'Transação';
           return t || (credito ? 'Recebimento' : 'Pagamento');
         }
