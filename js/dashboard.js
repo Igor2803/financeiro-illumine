@@ -80,9 +80,6 @@ function atualizarDashboard() {
     .filter((c) => c.status === 'pago' && c.vencimento >= de + '-01' && c.vencimento <= ate + '-31')
     .reduce((s, c) => s + c.valor, 0);
 
-  const taxasIntervalo = [...receber, ...pagar]
-    .filter((c) => (c.taxaStone || 0) > 0 && (c.vencimento || '') >= de + '-01' && (c.vencimento || '') <= ate + '-31')
-    .reduce((s, c) => s + (c.taxaStone || 0), 0);
   const receitaBruta = entradasIntervalo + receber
     .filter((c) => c.status === 'recebido' && (c.taxaStone || 0) > 0 && (c.vencimento || '') >= de + '-01' && (c.vencimento || '') <= ate + '-31')
     .reduce((s, c) => s + (c.taxaStone || 0), 0);
@@ -94,7 +91,7 @@ function atualizarDashboard() {
     entradasIntervalo - saidasIntervalo >= 0 ? '#2b8a3e' : '#c92a2a';
   document.getElementById('resumo-bruto').textContent = formatarMoeda(receitaBruta);
   document.getElementById('resumo-liquido').textContent = formatarMoeda(entradasIntervalo);
-  document.getElementById('resumo-taxas').textContent = formatarMoeda(taxasIntervalo);
+  document.getElementById('resumo-saidas').textContent = formatarMoeda(saidasIntervalo);
 
   // Próximos vencimentos (pendentes, próximos 30 dias)
   const pendentes = [
