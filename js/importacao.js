@@ -99,7 +99,10 @@ function processarArquivo(file) {
       linhasParseadas = [];
 
       for (let i = inicio; i < linhas.length; i++) {
-        const colunas = linhas[i].split(sep).map((c) => c.replace(/^"|"$/g, '').trim());
+        // Substitui vírgulas decimais (ex: -167,32) por ponto antes de splittar
+        // para evitar desalinhamento de colunas em CSVs com separador vírgula
+        const linhaFixa = linhas[i].replace(/(\d),(\d)/g, '$1.$2');
+        const colunas = linhaFixa.split(sep).map((c) => c.replace(/^"|"$/g, '').trim());
         if (colunas.length < 5) continue;
 
         // Mapeamento de colunas Stone:
