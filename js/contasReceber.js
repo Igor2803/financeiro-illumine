@@ -5,6 +5,8 @@ const colecaoReceber = db.collection('contasReceber');
 const formReceber = document.getElementById('form-receber');
 const tabelaReceber = document.getElementById('tabela-receber');
 const filtroStatusReceber = document.getElementById('receber-filtro-status');
+const filtroCategoriaReceber = document.getElementById('receber-filtro-categoria');
+const filtroAnoReceber = document.getElementById('receber-filtro-ano');
 const filtroMesReceber = document.getElementById('receber-filtro-mes');
 const filtroBuscaReceber = document.getElementById('receber-filtro-busca');
 const btnLimparMesReceber = document.getElementById('receber-limpar-mes');
@@ -19,10 +21,19 @@ colecaoReceber.orderBy('vencimento').onSnapshot((snapshot) => {
 
 function renderizarTabelaReceber() {
   const filtro = filtroStatusReceber.value;
+  const cat = filtroCategoriaReceber.value;
+  const ano = filtroAnoReceber.value;
   const mes = filtroMesReceber.value;
   const linhas = window.contasReceberCache
     .filter((c) => filtro === 'todos' || c.status === filtro)
-    .filter((c) => !mes || (c.vencimento || '').startsWith(mes))
+    .filter((c) => !cat || c.categoria === cat)
+    .filter((c) => {
+      const v = c.vencimento || '';
+      if (ano && mes) return v.startsWith(`${ano}-${mes}`);
+      if (ano) return v.startsWith(ano);
+      if (mes) return v.slice(5, 7) === mes;
+      return true;
+    })
     .filter((c) => !filtroBuscaReceber.value || (c.descricao || '').toLowerCase().includes(filtroBuscaReceber.value.toLowerCase()))
     .map((c) => {
       const st = statusVisual(c.status, c.vencimento);
@@ -49,9 +60,13 @@ function renderizarTabelaReceber() {
 }
 
 filtroStatusReceber.addEventListener('change', renderizarTabelaReceber);
+filtroCategoriaReceber.addEventListener('change', renderizarTabelaReceber);
+filtroAnoReceber.addEventListener('change', renderizarTabelaReceber);
 filtroMesReceber.addEventListener('change', renderizarTabelaReceber);
 filtroBuscaReceber.addEventListener('input', renderizarTabelaReceber);
 btnLimparMesReceber.addEventListener('click', () => {
+  filtroCategoriaReceber.value = '';
+  filtroAnoReceber.value = '';
   filtroMesReceber.value = '';
   filtroBuscaReceber.value = '';
   renderizarTabelaReceber();

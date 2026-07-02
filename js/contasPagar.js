@@ -5,6 +5,8 @@ const colecaoPagar = db.collection('contasPagar');
 const formPagar = document.getElementById('form-pagar');
 const tabelaPagar = document.getElementById('tabela-pagar');
 const filtroStatusPagar = document.getElementById('pagar-filtro-status');
+const filtroCategoriaPagar = document.getElementById('pagar-filtro-categoria');
+const filtroAnoPagar = document.getElementById('pagar-filtro-ano');
 const filtroMesPagar = document.getElementById('pagar-filtro-mes');
 const filtroBuscaPagar = document.getElementById('pagar-filtro-busca');
 const btnLimparMesPagar = document.getElementById('pagar-limpar-mes');
@@ -19,10 +21,19 @@ colecaoPagar.orderBy('vencimento').onSnapshot((snapshot) => {
 
 function renderizarTabelaPagar() {
   const filtro = filtroStatusPagar.value;
+  const cat = filtroCategoriaPagar.value;
+  const ano = filtroAnoPagar.value;
   const mes = filtroMesPagar.value;
   const linhas = window.contasPagarCache
     .filter((c) => filtro === 'todos' || c.status === filtro)
-    .filter((c) => !mes || (c.vencimento || '').startsWith(mes))
+    .filter((c) => !cat || c.categoria === cat)
+    .filter((c) => {
+      const v = c.vencimento || '';
+      if (ano && mes) return v.startsWith(`${ano}-${mes}`);
+      if (ano) return v.startsWith(ano);
+      if (mes) return v.slice(5, 7) === mes;
+      return true;
+    })
     .filter((c) => !filtroBuscaPagar.value || (c.descricao || '').toLowerCase().includes(filtroBuscaPagar.value.toLowerCase()))
     .map((c) => {
       const st = statusVisual(c.status, c.vencimento);
@@ -49,9 +60,13 @@ function renderizarTabelaPagar() {
 }
 
 filtroStatusPagar.addEventListener('change', renderizarTabelaPagar);
+filtroCategoriaPagar.addEventListener('change', renderizarTabelaPagar);
+filtroAnoPagar.addEventListener('change', renderizarTabelaPagar);
 filtroMesPagar.addEventListener('change', renderizarTabelaPagar);
 filtroBuscaPagar.addEventListener('input', renderizarTabelaPagar);
 btnLimparMesPagar.addEventListener('click', () => {
+  filtroCategoriaPagar.value = '';
+  filtroAnoPagar.value = '';
   filtroMesPagar.value = '';
   filtroBuscaPagar.value = '';
   renderizarTabelaPagar();
